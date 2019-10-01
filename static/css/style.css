@@ -1,0 +1,24 @@
+body{
+    background: lightgray;
+}
+
+.container{
+    background-color: white;
+    border: gray;
+    border: double;
+}
+
+
+
+.col{
+    margin:50px 500px 50px 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth{
+    margin:20% 5% 0 5%;
+    border: solid;
+    background-color: gray;
+
+}
