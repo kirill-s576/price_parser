@@ -1,0 +1,15 @@
+{% extends "authorisation/main.html" %}
+
+{% block entry %}
+
+    <div class="auth">
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="text" name="username">
+            <input type="password" name="password">
+            <input type="submit" value="Войти">
+        </form>
+        <a href ="registration/">Зарегистрироваться</a>
+    </div>
+
+{% endblock %}

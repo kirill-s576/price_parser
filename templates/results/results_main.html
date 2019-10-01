@@ -1,0 +1,48 @@
+{% extends "main/main_base.html" %}
+
+{% block content %}
+    <a href="refresh/" class="btn btn-dark">Обновить цены</a>
+    {% for goose in gooses %}
+        <div class="container" style="border: solid; margin: 20px">
+
+            <div class="col-lg-6" style="color: gray"><b>{{ goose.name }}</b></div>
+            <a href="" class="btn btn-primary other-button col-lg-2">Подробнее...</a>
+
+
+            <div hidden="true" class="container other-container">
+                {% for check in goose.check_set.all|dictsortreversed:"date"|slice:"1" %}
+                    <p><b>{{ check.date }}</b></p>
+                    <table class="table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Магазин</th>
+                              <th scope="col">Наименование как на сайте</th>
+                              <th scope="col">Цена</th>
+                            </tr>
+                          </thead>
+                    {% for subcheck in check.subcheck_set.all %}
+
+                          <tbody>
+                            <tr>
+                              {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
+                                <td style="color: darkred"><b>{{ subcheck.get_opponent }}</b></td>
+                                {% else %}
+                                <td>{{ subcheck.get_opponent }}</td>
+                                {% endif %}
+                              <td>{{ subcheck.get_localname}} <br>
+                              <a href="{{ subcheck.get_url }}">Ссылка</a></td>
+                              <td><b>{{ subcheck.price }}</b></td>
+                            </tr>
+
+                          </tbody>
+                    {% endfor %}
+                    </table>
+                    <p></p>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+{% endblock %}

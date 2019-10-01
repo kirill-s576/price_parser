@@ -1,0 +1,21 @@
+<div class="row">
+
+    {% for k,v in i.items %}
+
+        <div class="card col-lg-2" style="margin:10px">
+          <div class="card-body">
+            <h5 class="card-title goose-parent">{{ k }}</h5>
+            <h6 class="goose-quantity">{{ v|length }}</h6>
+              {% for goose in v %}
+                  <div class="goose-container"  style="border: solid; margin-top: 5px; border-color: lightgray">
+                      <input class="form-check-input card-subtitlegoose-check" type="checkbox">
+                      <span class="goose-name">{{ goose.name }}</span>
+                      <p><a href="{{  goose.url }}">Ссылка</a></p>
+                      <b><p class="goose-price card-text">{{ goose.price }}</p></b>
+                  </div>
+              {% endfor %}
+          </div>
+        </div>
+    {% endfor %}
+</div>
+

@@ -1,0 +1,23 @@
+{% extends "authorisation/main.html" %}
+
+{% block registration %}
+
+    <h1>Тут вводим данные для регистрации</h1>
+    <div class="col">
+        <h1>{{ req }}</h1>
+        <form class="registration-form">
+            {% csrf_token %}
+            <input class="row" type="text" value="11111" name="123">
+            <input class="row" type="text" value="11111" name="456">
+            <input class="row" type="text" value="11111" name="789">
+            <input class="row" type="text" value="11111" name="000">
+
+        </form>
+            <input type="submit" value="Зарегистрироваться" id="registration_submit">
+    </div>
+
+{% endblock %}
+
+<script>
+
+</script>

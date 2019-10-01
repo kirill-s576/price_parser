@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container col-lg-10 col-sm-auto">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="/ironparsermain/" class="btn btn-light col-sm-12 col-lg-auto" style="margin: 10px">Поиск и добавление товаров</a>
+            <a href="/ironparserresults/" class="btn btn-light col-sm-12 col-lg-auto" style="margin: 10px">Актуальные цены</a>
+            <a href="/news/" class="btn btn-light col-sm-12 col-lg-auto" style="margin: 10px">Новости, изменения</a>
+        </nav>
+
+
+        <div class="container-content col-lg-12 col-sm-auto">
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+    </div>
+
+
+<script src="/static/js/form_submit.js"></script>
+</body>
+</html>
