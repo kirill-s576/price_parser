@@ -71,7 +71,7 @@ class IronParser(object):
                 if str(self.keys_string).lower() in str(name).lower():
                     new_goose["name"] = name
                     new_goose["price"] = price
-                    new_goose["url"] = url
+                    new_goose["url"] = url.replace('"', '')
                     result.append(new_goose)
                 result.sort(key=self.sort_price, reverse=True)
             return result
@@ -117,7 +117,7 @@ class IronParser(object):
                 url = goose[0]
                 new_goose["name"] = name
                 new_goose["price"] = float(re.findall(r'(\d+.\d+)', price)[0])
-                new_goose["url"] = url
+                new_goose["url"] = url.replace('"', '')
                 result.append(new_goose)
             result.sort(key=self.sort_price, reverse=True)
             return result
@@ -143,7 +143,7 @@ class IronParser(object):
                 url = goose[0]
                 new_goose["name"] = name
                 new_goose["price"] = float(re.findall(r'(\d+.\d+)', price)[0])
-                new_goose["url"] = url
+                new_goose["url"] = url.replace('"', '')
                 result.append(new_goose)
             result.sort(key=self.sort_price, reverse=True)
 
@@ -167,7 +167,7 @@ class IronParser(object):
                 url = goose[0]
                 new_goose["name"] = name
                 new_goose["price"] = float(re.findall(r'(\d+)', price)[0])
-                new_goose["url"] = url
+                new_goose["url"] = url.replace('"', '')
                 result.append(new_goose)
             result.sort(key=self.sort_price, reverse=True)
             return result
@@ -190,3 +190,26 @@ class IronParser(object):
         all["VapeArt"] = vapeart
         return all
 
+    def available_parce(self, url):
+        parse_terms = {
+            'sigaretnet.by': r'<div class="availability">(.+?)</div>',
+            'vipmag.by': r'<div class=.lfttitle left-fl.>(.+?)</div><div class="pl-11 ib lfttitle left-fl fweight-n">(.+?)</div>',
+            'esteamer.by': r'<p class="stock out-of-stock">(.+?)</p>',
+            'vapeart.by': r'<div class="product__quanity">(.+?)</div>',
+            'nekuri.by': ''
+
+        }
+        available = []
+        return_available = []
+        for term in parse_terms:
+            if term in url:
+                html = self.get_find_html(url)
+                available = re.findall(parse_terms[term], html, flags=re.DOTALL)
+        for a in available:
+            b = ' '.join(a)
+            return_available.append(b.replace(' ', '').replace('\n', '').replace('\t', '').replace('\r', ''))
+        return return_available
+
+a = IronParser('')
+av = a.available_parce('https://vipmag.by/cigarettes/veyp_eleaf_ijust_3_s_kliromayzerom_ello_duro_101626/')
+print(av)

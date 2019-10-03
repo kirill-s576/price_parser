@@ -5,13 +5,14 @@
     {% for goose in gooses %}
         <div class="container" style="border: solid; margin: 20px">
 
-            <div class="col-lg-6" style="color: gray"><b>{{ goose.name }}</b></div>
-            <a href="" class="btn btn-primary other-button col-lg-2">Подробнее...</a>
+            <div class="col-lg-12" style="color: gray"><b>{{ goose.name }} / <b>SigaretNet.by: {{ goose.get_base_price }}</b> /
+                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
+            <a href="" class="badge badge-secondary other-button col-lg-2">Подробнее...</a>
 
 
             <div hidden="true" class="container other-container">
                 {% for check in goose.check_set.all|dictsortreversed:"date"|slice:"1" %}
-                    <p><b>{{ check.date }}</b></p>
+                    <p><b>{{ check.date }} </b></p>
                     <table class="table">
                           <thead>
                             <tr>
@@ -23,16 +24,21 @@
                     {% for subcheck in check.subcheck_set.all %}
 
                           <tbody>
-                            <tr>
-                              {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
-                                <td style="color: darkred"><b>{{ subcheck.get_opponent }}</b></td>
-                                {% else %}
-                                <td>{{ subcheck.get_opponent }}</td>
-                                {% endif %}
-                              <td>{{ subcheck.get_localname}} <br>
-                              <a href="{{ subcheck.get_url }}">Ссылка</a></td>
-                              <td><b>{{ subcheck.price }}</b></td>
+                            {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
+                            <tr  class="table-warning">
+                                <td><b>{{ subcheck.get_opponent }}</b></td>
+                                <td>{{ subcheck.get_localname}} <br>
+                                <a href="{{ subcheck.get_url }}">Ссылка</a></td>
+                                <td><b>{{ subcheck.price }}</b></td>
                             </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ subcheck.get_opponent }}</td>
+                                <td>{{ subcheck.get_localname}} <br>
+                                <a href="{{ subcheck.get_url }}">Ссылка</a></td>
+                                <td><b>{{ subcheck.price }}</b></td>
+                            </tr>
+                            {% endif %}
 
                           </tbody>
                     {% endfor %}

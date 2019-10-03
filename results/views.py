@@ -11,6 +11,8 @@ def results_main(request):
     gooses = GooseBase.objects.all().order_by("name")
     opponents = Opponent.objects.all()
     op_gooses = OpponentGoose.objects.all()
+    a = op_gooses.values('url').distinct()
+    print(a)
     return render(request, "results/results_main.html", locals())
 
 def results_refresh(request):
@@ -24,11 +26,8 @@ def results_refresh(request):
         check.save()
         opponent_gooses = OpponentGoose.objects.filter(goose=goose)
         for opponent_goose in opponent_gooses:
-            print(parse)
             for shop in parse:
-                print(shop)
                 for find_goose in parse[shop]:
-                    print(find_goose)
                     if find_goose["name"] == opponent_goose.local_name:
                         sub = SubCheck(check_name=check, price=float(find_goose["price"]), opponent_goose=opponent_goose)
                         sub.save()

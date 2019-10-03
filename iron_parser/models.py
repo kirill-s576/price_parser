@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 # Create your models here.
 from datetime import datetime
+from django.db.models import Q
 
 class GooseBase(models.Model):
     name = models.CharField(max_length=100)
@@ -13,6 +14,25 @@ class GooseBase(models.Model):
     category = models.CharField(max_length=100, default="Разное")
     def __str__(self):
         return self.name
+
+    def get_price_list(self):
+        price_list = []
+        last_check = Check.objects.filter(goose=self).order_by('-date')[0]
+        subchecks = SubCheck.objects.filter(check_name=last_check).exclude( opponent_goose__opponent_name__name='SigaretNet')
+        for subcheck in subchecks:
+            price_list.append(float(subcheck.price))
+        return sorted(price_list)
+
+    def get_base_price(self):
+        base_price = []
+        last_check = Check.objects.filter(goose=self).order_by('-date')[0]
+        subchecks = SubCheck.objects.filter(check_name=last_check, opponent_goose__opponent_name__name='SigaretNet')
+
+        for subcheck in subchecks:
+            base_price.append(subcheck.price)
+        return sorted(base_price)
+
+
 
 
 class Opponent(models.Model):
@@ -29,13 +49,14 @@ class OpponentGoose(models.Model):
     local_name = models.CharField(max_length=100)
     url = models.URLField(max_length=1000)
     def __str__(self):
-        return self.goose.name
+        return str(self.goose.name) + "/" + str(self.opponent_name)
 
 
 class Check(models.Model):
     goose = models.ForeignKey(GooseBase, on_delete=models.CASCADE)
     date = models.DateTimeField(default=datetime.now())
     variants = models.CharField(max_length=1000)  # Массив вариантов, которые выдал поиск.(JSON)
+
 
 
 class SubCheck(models.Model):
@@ -54,3 +75,6 @@ class SubCheck(models.Model):
     def get_url(self):
         a = OpponentGoose.objects.get(subcheck=self)
         return a.url
+
+
+
