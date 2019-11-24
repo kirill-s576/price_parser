@@ -1,54 +1,96 @@
-{% extends "main/main_base.html" %}
+{% extends "main/main_base_new.html" %}
 
 {% block content %}
-    <a href="refresh/" class="btn btn-dark">Обновить цены</a>
-    {% for goose in gooses %}
-        <div class="container" style="border: solid; margin: 20px">
+<a href="refresh/" hidden="True" class="btn btn-dark">Обновить цены</a>
+{% for category in categories %}
 
-            <div class="col-lg-12" style="color: gray"><b>{{ goose.name }} / <b>SigaretNet.by: {{ goose.get_base_price }}</b> /
-                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
-            <a href="" class="badge badge-secondary other-button col-lg-2">Подробнее...</a>
-
-
-            <div hidden="true" class="container other-container">
-                {% for check in goose.check_set.all|dictsortreversed:"date"|slice:"1" %}
-                    <p><b>{{ check.date }} </b></p>
-                    <table class="table">
-                          <thead>
-                            <tr>
-                              <th scope="col">Магазин</th>
-                              <th scope="col">Наименование как на сайте</th>
-                              <th scope="col">Цена</th>
-                            </tr>
-                          </thead>
-                    {% for subcheck in check.subcheck_set.all %}
-
-                          <tbody>
-                            {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
-                            <tr  class="table-warning">
-                                <td><b>{{ subcheck.get_opponent }}</b></td>
-                                <td>{{ subcheck.get_localname}} <br>
-                                <a href="{{ subcheck.get_url }}">Ссылка</a></td>
-                                <td><b>{{ subcheck.price }}</b></td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td>{{ subcheck.get_opponent }}</td>
-                                <td>{{ subcheck.get_localname}} <br>
-                                <a href="{{ subcheck.get_url }}">Ссылка</a></td>
-                                <td><b>{{ subcheck.price }}</b></td>
-                            </tr>
-                            {% endif %}
-
-                          </tbody>
-                    {% endfor %}
-                    </table>
-                    <p></p>
-                {% endfor %}
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="btn btn-secondary col-lg-12 category-select-{{ category.category }}">
+                >{{ category.category }}
             </div>
+
         </div>
 
+        <div class="col-lg-10 category-content-{{ category.category }}">
 
-    {% endfor %}
+            {% for goose in gooses %}
+                {% if goose.category ==  category.category %}
 
+                    <div class="result-goose-container">
+                        <div class="row">
+                            {% if goose.get_price_list|last  < goose.get_base_price|first  %}
+                            <div class="col-lg-9" style="color: #e06e6e">
+                                <a href="/goose_card/{{ goose.id }}/">...</a>
+                                <b>{{ goose.name }} <br> <b>SigaretNet.by: {{ goose.get_base_price }}</b> /
+                                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
+                            {% else %}
+                            <div class="col-lg-9" style="color: #43b777">
+                                <a href="/goose_card/{{ goose.id }}/">...</a>
+                                <b>{{ goose.name }} <br> <b>SigaretNet.by: {{ goose.get_base_price }}</b> /
+                                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
+
+                            {% endif %}
+
+                        </div>
+                        <a href="" class="badge badge-secondary other-button col-lg-1">Подробнее...</a>
+
+
+
+                        <div hidden="true" class="container other-container col-lg-12">
+                            {% for check in goose.check_set.all|dictsortreversed:"date"|slice:"1" %}
+                                <p><b>{{ check.date }} </b></p>
+                                <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">Магазин</th>
+                                          <th scope="col">Наименование как на сайте</th>
+                                          <th scope="col">Наличие</th>
+                                          <th scope="col">Цена</th>
+                                        </tr>
+                                      </thead>
+                                {% for subcheck in check.subcheck_set.all %}
+
+                                      <tbody>
+                                        {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
+                                        <tr  class="table-warning">
+                                            <td><b>{{ subcheck.get_opponent }}</b></td>
+                                            <td><a href="{{ subcheck.get_url }}">{{ subcheck.get_localname}}</a> </td>
+                                            <td>{{ subcheck.get_available}} </td>
+                                            {% if subcheck.price == goose.get_price_list|last %}
+                                                <td style="color: #e06e6e"><b>{{ subcheck.price }}</b></td>
+                                            {% elif  subcheck.price == goose.get_price_list|first %}
+                                                <td style="color: #43b777"><b>{{ subcheck.price }}</b></td>
+                                            {% else %}
+                                                <td style=""><b>{{ subcheck.price }}</b></td>
+                                            {% endif %}
+                                        </tr>
+                                        {% else %}
+                                        <tr>
+                                            <td>{{ subcheck.get_opponent }}</td>
+                                            <td><a href="{{ subcheck.get_url }}">{{ subcheck.get_localname}}</a> </td>
+                                            <td>{{ subcheck.get_available}} </td>
+                                            {% if subcheck.price == goose.get_price_list|last %}
+                                                <td style="color: #e06e6e"><b>{{ subcheck.price }}</b></td>
+                                            {% elif  subcheck.price == goose.get_price_list|first %}
+                                                <td style="color: #43b777"><b>{{ subcheck.price }}</b></td>
+                                            {% else %}
+                                                <td style=""><b>{{ subcheck.price }}</b></td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endif %}
+
+                                      </tbody>
+                                {% endfor %}
+                                </table>
+                                <p></p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}

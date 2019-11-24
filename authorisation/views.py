@@ -1,24 +1,25 @@
 from django.shortcuts import render
 from authorisation.models import Profile, User
-from django.contrib.auth import *
+from django.contrib.auth import login, logout, get_user
 from django.http import HttpResponse, HttpResponseRedirect
-import re
-import urllib.request
-import json
-
-def get_html(url):
-    resp = urllib.request.urlopen(url)
-    return resp.read().decode("utf8")
+from django.contrib import auth
 
 def authorisation(request):
+        user = get_user(request)
 
-        get_user(request)
-
-        price = get_user(request)
-        if price.is_anonymous:
-            p = "Анонимный польователь"
+        if user.is_authenticated:
+            return HttpResponseRedirect('/')
         else:
-            p = Profile.objects.get(user=price)
+            return render(request, "authorisation/entry_block.html", locals())
+
+
+def enter(request):
+    try:
+        user = auth.authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        login(request, user)
+        return HttpResponseRedirect('/')
+    except:
+        message = "Неправильно введен логин или пароль"
         return render(request, "authorisation/entry_block.html", locals())
 
 def registration(request):
@@ -27,3 +28,7 @@ def registration(request):
         return HttpResponse(request)
     else:
         return render(request, "authorisation/registration_block.html", locals())
+
+def log_out(request):
+    logout(request)
+    return HttpResponseRedirect('/authorisation/')

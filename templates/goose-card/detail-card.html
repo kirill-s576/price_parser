@@ -1,0 +1,158 @@
+{% extends "main/main_base_new.html" %}
+
+
+{% block content %}
+
+
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3-col">
+            <div class="mdl-card mdl-shadow--6dp">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                 {{ goose.name }}
+                </button><br>
+                <img src="{{ goose.image }}" class="card-img-top" alt="..."><br>
+                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="/ironparserresults/refresh/{{ goose.id }}">Репарсинг</a>
+                <br>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                     Удалить товар
+                </button><br>
+            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--9-col">
+            <div class="mdl-grid ">
+                <div class="mdl-cell mdl-cell--8-col">
+                    <div class="mdl-card mdl-shadow--6dp">
+                        <form action="">
+                         <div class="form-group">
+                             <label>Категория:</label>
+                             <input type="text" name="category" class="form-control" value="{{ goose.category }}">
+                             <label>Название товара:</label>
+                             <input type="text" name="name"  class="form-control" value="{{ goose.name }}">
+                             <label>Базовая цена:</label>
+                             <input type="text" name="base_price" class="form-control" value="{{ goose.get_base_price|first }}">
+                             <label>Ключевое слово для поиска: {{ goose.keys }}</label><br>
+                             <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Применить изменения</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--4-col">
+                    <div class="mdl-card mdl-shadow--6dp">
+                         {% if goose.get_price_list|last  < goose.get_base_price|first  %}
+                            <div class="col-lg-9" style="color: #e06e6e">
+                                <b><b>SigaretNet.by: {{ goose.get_base_price }}</b> /
+                                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
+                            {% else %}
+                            <div class="col-lg-9" style="color: #43b777">
+                                <b><b>SigaretNet.by: {{ goose.get_base_price }}</b> /
+                                Промежуток цен конкурентов: {{ goose.get_price_list|first }} - {{ goose.get_price_list|last }}</b></div>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <div class="mdl-card mdl-shadow--6dp">
+                        <div class="mdl-card mdl-shadow--6dp">
+                        <div class="row">
+
+
+                        </div>
+                        <div class="mdl-card other-container">
+                            {% include "goose-card/parser_result.html" %}
+                            {% include "goose-card/parser_result_new.html" %}
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-card mdl-shadow--6dp">
+                <input id="chart" hidden="true" value="{{ goose.info_for_chart }}">
+                <canvas id="myChart" width="800" height="400"></canvas>
+            </div>
+        </div>
+        <div class="mdl-cell mdl-cell--6-col">
+            <div class="mdl-card mdl-shadow--6dp">
+                Новые товары, по запросу {{ goose.keys }}
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent rem-all-potential"
+                        value="">
+                  Удалить все
+                </button>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Номенклатура</th>
+                      <th>Цена</th>
+                      <th>Добавить</th>
+                      <th>Удалить</th>
+                    </tr>
+                  </thead>
+                  <tbody class="pot-goose-tbody">
+                        {% for potential_goose in goose.potential_gooses %}
+                            <tr>
+                                <td>
+                                    <a href="{{ potential_goose.url }} ">{{ potential_goose.name }}  </a>
+                                </td>
+                                <td>
+                                    {{ potential_goose.price }}
+                                </td>
+                                <td>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored add-potential minimal"
+                                            value="{{ potential_goose.id }}">
+                                      <i class="material-icons">add</i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored remove-potential minimal"
+                                            value="{{ potential_goose.id }}">
+                                      <i class="material-icons">remove</i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{#    {%  include "iron_parser/iron_parser_content.html" %}#}
+    <form name="key-form" class="ajax-form inline-form">
+        {% csrf_token %}
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ajax-submit">
+          <i class="material-icons">find_in_page</i>
+        </button>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input type="text" class="mdl-textfield__input parse-input" name="keys" id="sample4" style="color: white;" value="{{ goose.keys }}">
+            <label class="mdl-textfield__label" for="sample4" style="color: white;">Наименование...</label>
+        </div>
+        <div class="mdl-spinner mdl-js-spinner"></div>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored create-goose">
+          <i class="material-icons">add</i>
+        </button>
+    </form>
+    <div class="mdl-grid sticky" >
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-card mdl-shadow--6dp " >
+                <div class="mdl-grid goose-bar" style="width: 100%">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="parse-container">
+
+        </div>
+    </div>
+
+    <script>
+        let goose_id = {{ goose.id }};
+    </script>
+
+{% endblock content %}

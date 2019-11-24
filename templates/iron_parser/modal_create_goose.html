@@ -1,0 +1,40 @@
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog mdl-shadow--6dp" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Добавление нового товара</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <input type="text" class="new-goose-input form-control col-lg-12" placeholder="Название нового товара" name="keys">
+            </div>
+            <br>
+            <div class="row">
+                <label>Выберите категорию</label>
+                <select class="form-control goose-category-select col-lg-12">
+                    <option>Стартовые наборы</option>
+                    <option>Батарейные моды</option>
+                    <option>Атомайзеры</option>
+                    <option>Аккумуляторы</option>
+                    <option>Моддинг</option>
+                    <option>Испарители</option>
+                    <option>Картриджи</option>
+                    <option>Жидкости</option>
+                    <option>Самозамес</option>
+                </select>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="mdl-spinner mdl-js-spinner"></div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-primary create-goose">Создать</button>
+      </div>
+    </div>
+  </div>
+</div>

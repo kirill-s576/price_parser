@@ -1,20 +1,25 @@
-<div class="row">
+<div class="mdl-grid">
 
     {% for k,v in i.items %}
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-card mdl-shadow--6dp goose-card">
+                  <div class="card-body">
+                        <h5 class="card-title goose-shop">{{ k }}</h5>
+                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored goose-quantity">{{ v|length }}</button>
 
-        <div class="card col-lg-2" style="margin:10px">
-          <div class="card-body">
-            <h5 class="card-title goose-parent">{{ k }}</h5>
-            <h6 class="goose-quantity">{{ v|length }}</h6>
-              {% for goose in v %}
-                  <div class="goose-container"  style="border: solid; margin-top: 5px; border-color: lightgray">
-                      <input class="form-check-input card-subtitlegoose-check" type="checkbox">
-                      <span class="goose-name">{{ goose.name }}</span>
-                      <p><a href="{{  goose.url }}">Ссылка</a></p>
-                      <b><p class="goose-price card-text">{{ goose.price }}</p></b>
+                          <div class="mdl-grid">
+                              {% for goose in v %}
+                                  <div class="demo-card-square mdl-shadow--6dp mdl-cell mdl-cell--2-col goose-container">
+                                      <div class="mdl-card__title mdl-card--expand goose-title goose-parent"><b>{{ k }}</b></div>
+                                      <div class="mdl-card__supporting-text goose-name">{{ goose.name }}</div>
+                                      <a href="{{  goose.url }}" target="_blank">Ссылка</a>
+                                      <div class="mdl-card__actions mdl-card--border goose-price"><b>{{ goose.price }}</b></div>
+                                  </div>
+                              {% endfor %}
+                           </div>
+
                   </div>
-              {% endfor %}
-          </div>
+            </div>
         </div>
     {% endfor %}
 </div>

@@ -1,0 +1,46 @@
+{% for check in goose.check_set.all|dictsortreversed:"date"|slice:2 %}
+    <p hidden="true"><b>{{ check.date }} </b></p>
+    <table hidden="true" class="table">
+          <thead>
+            <tr>
+              <th scope="col">Магазин</th>
+              <th scope="col">Наименование как на сайте</th>
+              <th scope="col">Наличие</th>
+              <th scope="col">Цена</th>
+            </tr>
+          </thead>
+    {% for subcheck in check.subcheck_set.all %}
+          <tbody>
+            {% if  subcheck.get_opponent|lower == 'sigaretnet' %}
+            <tr  class="table-warning">
+                <td><b>{{ subcheck.get_opponent }}</b></td>
+                <td><a href="{{ subcheck.get_url }}" class="actual-goose">{{ subcheck.get_localname}}</a> </td>
+                <td>{{ subcheck.get_available}} </td>
+                {% if subcheck.price == goose.get_price_list|last %}
+                    <td style="color: #e06e6e"><b>{{ subcheck.price }}</b></td>
+                {% elif  subcheck.price == goose.get_price_list|first %}
+                    <td style="color: #43b777"><b>{{ subcheck.price }}</b></td>
+                {% else %}
+                    <td style=""><b>{{ subcheck.price }}</b></td>
+                {% endif %}
+            </tr>
+            {% else %}
+            <tr>
+                <td>{{ subcheck.get_opponent }}</td>
+                <td><a href="{{ subcheck.get_url }}" class="actual-goose">{{ subcheck.get_localname}}</a> </td>
+                <td>{{ subcheck.get_available}} </td>
+                {% if subcheck.price == goose.get_price_list|last %}
+                    <td style="color: #e06e6e"><b>{{ subcheck.price }}</b></td>
+                {% elif  subcheck.price == goose.get_price_list|first %}
+                    <td style="color: #43b777"><b>{{ subcheck.price }}</b></td>
+                {% else %}
+                    <td style=""><b>{{ subcheck.price }}</b></td>
+                {% endif %}
+            </tr>
+            {% endif %}
+          </tbody>
+    {% endfor %}
+    </table>
+    <p></p>
+{% endfor %}
+

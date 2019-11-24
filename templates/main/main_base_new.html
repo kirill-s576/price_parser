@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vape_parser</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="/static/css/chartist-plugin-tooltip.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.grey-red.min.css" />
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<style>
+.demo-layout-transparent {background: #9d9d9d;}
+.demo-layout-transparent .mdl-layout__header,
+.demo-layout-transparent .mdl-layout__drawer-button {
+  /* This background is dark, so we set text to white. Use 87% black instead if
+     your background is light. */
+  color: white;
+}
+</style>
+
+<div class="demo-layout-transparent mdl-layout mdl-js-layout">
+
+  <header class="mdl-layout__header mdl-layout__header--transparent">
+    <div class="mdl-layout__header-row" >
+      <!-- Title -->
+        <a href="/"><img src="/static/image/SN.png"  height="50"  alt="" ></a>
+
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer" ></div>
+      <!-- Navigation -->
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="/authorisation/logout/">Выйти</a>
+        <button class="mdl-navigation__link mdl-button mdl-js-button mdl-button--fab mdl-button--colored settings-button">
+          <i class="material-icons">settings</i>
+        </button>
+
+{#        <a class="mdl-navigation__link" href="">Link</a>#}
+{#        <a class="mdl-navigation__link" href="">Link</a>#}
+      </nav>
+    </div>
+  </header>
+
+  <div class="mdl-layout__drawer" style="background: #747575; color: white;">
+    <span class="mdl-layout-title">Меню</span>
+    <nav class="mdl-navigation" >
+        <button id="demo-menu-lower-right" class="mdl-navigation__link mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Категории товаров >>></button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
+            {% for cat in categories %}
+                <li class="mdl-menu__item"><a href="/category/{{ cat.category }}/">{{ cat.category }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <a class="mdl-navigation__link" href="/ironparsermain/">Подбор товаров</a>
+        <a class="mdl-navigation__link" href="/ironparserresults/">Аналитика цен</a>
+        <a class="mdl-navigation__link" href="/news/">Новости</a>
+
+    </nav>
+  </div>
+
+  <main class="mdl-layout__content">
+
+            {% block content %}
+            <form name="find-form" action="">
+                {% csrf_token %}
+                <div class="mdl-textfield mdl-js-textfield" style="width: 95%;">
+                    <input class="mdl-textfield__input" type="text" id="find">
+                    <label class="mdl-textfield__label" for="find">Поиск...</label>
+                </div>
+            </form>
+
+            <div class="findresult">
+                {% include 'main/goose_cards_content.html' %}
+            </div>
+            {% endblock content %}
+
+  </main>
+    {% include 'main/settings.html' %}
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script src="/static/js/form_submit.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+<script src="/static/js/chartist-plugin-tooltip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
+
+
+</body>
+</html>

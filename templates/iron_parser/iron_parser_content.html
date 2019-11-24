@@ -1,41 +1,37 @@
-{% extends "main/main_base.html" %}
+{% extends "main/main_base_new.html" %}
 
 {% block content %}
+    <form name="key-form" class="ajax-form inline-form">
+        {% csrf_token %}
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored ajax-submit">
+          <i class="material-icons">find_in_page</i>
+        </button>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input type="text" class="mdl-textfield__input parse-input" name="keys" id="sample4" style="color: white;">
+            <label class="mdl-textfield__label" for="sample4" style="color: white;">Наименование...</label>
+        </div>
+        <div class="mdl-spinner mdl-js-spinner"></div>
+    </form>
+    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored add-goose-button">
+      <i class="material-icons">add</i>
+    </button>
+    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored refresh-checked-button">
+      <i class="material-icons">refresh</i>
+    </button>
+    <div class="mdl-grid sticky" >
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-card mdl-shadow--6dp " >
+                <div class="mdl-grid goose-bar" style="width: 100%">
 
-    <div class="row">
-        <div class="form-inline" style="padding-top:10px; padding-bottom:10px;">
-            <div class="container col-lg-4 col-sm-12" style="min-height: 160px; padding-top: 10px;">
-                <form name="key-form" class="ajax-form form-group">
-                    {% csrf_token %}
-                    <input type="text" class="parse-input form-control col-lg-12 col-sm-12" placeholder="Наименование" name="keys">
-                    <input type="button" class ="ajax-submit btn btn-primary col-sm-12" value="Поиск" style="margin-top: 10px">
-                </form>
-            </div>
-            <div class="container col-lg-4  col-sm-12" style="min-height: 160px; padding-top: 10px; background-color: lightgray">
-                -Введите в строку слева ключевое слово для поиска товара и нажмите "Найти" <br>
-                -Отметьте галками идентичные товары от разных магазинов. <br>
-                -Заполните форму справа и создайте новый товар. <br>
-            </div>
-            <div class="container col-lg-4 col-sm-12" style="min-height: 160px; padding-top: 10px;">
-                <div class="form-group">
-                    <input type="text" class="new-goose-input form-control col-lg-12" placeholder="Название нового товара" name="keys">
-                    <select class="form-control goose-category-select col-lg-12">
-                        <option>Выберите категорию...</option>
-                        <option>Стартовые наборы</option>
-                        <option>Батарейные моды</option>
-                        <option>Атомайзеры</option>
-                        <option>Аккумуляторы</option>
-                        <option>Моддинг</option>
-                    </select>
-                    <a href="" type="button" class="btn btn-success create-goose col-lg-12" style="margin-top: 10px">Создать товар</a>
                 </div>
             </div>
         </div>
-
-
     </div>
-    <div class="row">
-        <div class="container parse-container col-lg-12 col-sm-12" style="min-height: 500px;">
+    {% include "iron_parser/modal_create_goose.html" %}
+
+
+    <div class="">
+        <div class="parse-container">
 
         </div>
     </div>

@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'main',
     'authorisation',
     'iron_parser',
-    'results'
+    'results',
+    'goose_card',
+    'news'
 ]
 
 MIDDLEWARE = [

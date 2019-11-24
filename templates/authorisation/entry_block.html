@@ -1,15 +1,27 @@
 {% extends "authorisation/main.html" %}
 
 {% block entry %}
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--4-col">
 
-    <div class="auth">
-        <form method="post" action="">
-            {% csrf_token %}
-            <input type="text" name="username">
-            <input type="password" name="password">
-            <input type="submit" value="Войти">
-        </form>
-        <a href ="registration/">Зарегистрироваться</a>
+        </div>
+        <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--6dp" style="top: 200px;">
+            <div class="mdl-grid">
+
+            </div>
+            <form class="" method="post" action="/authorisation/enter/">
+                {% csrf_token %}
+                <label>{{ message }}</label>
+                <input class="form-row col-lg-12" type="text" name="username"><br>
+                <input class="form-row col-lg-12" type="password" name="password"><br>
+                <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Войти">
+            </form>
+{#            <a href ="registration/">Зарегистрироваться</a>#}
+        </div>
+        <div class="mdl-cell mdl-cell--4-col">
+
+        </div>
     </div>
+
 
 {% endblock %}

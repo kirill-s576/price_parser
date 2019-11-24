@@ -3,33 +3,30 @@ from iron_parser.models import *
 from .models import *
 from django.http import HttpResponse, HttpResponseRedirect
 from iron_parser.utils import IronParser
-
+import threading
+from django.contrib.auth import get_user
+from .refresh_functions import *
 # Create your views here.
 
 
 def results_main(request):
-    gooses = GooseBase.objects.all().order_by("name")
+
+    gooses = GooseBase.objects.filter(user__username=get_user(request).username).order_by("name")
     opponents = Opponent.objects.all()
-    op_gooses = OpponentGoose.objects.all()
-    a = op_gooses.values('url').distinct()
-    print(a)
+    categories = GooseBase.objects.all().values('category').distinct()
     return render(request, "results/results_main.html", locals())
 
 def results_refresh(request):
-    gooses = GooseBase.objects.all()
-    for goose in gooses:
-        keys = goose.keys
-        parser = IronParser(keys)
-        parse = parser.get_all_parse()
-        # Создаем новый чек и сохраняем результаты поиска.
-        check = Check(goose=goose, variants=parse)
-        check.save()
-        opponent_gooses = OpponentGoose.objects.filter(goose=goose)
-        for opponent_goose in opponent_gooses:
-            for shop in parse:
-                for find_goose in parse[shop]:
-                    if find_goose["name"] == opponent_goose.local_name:
-                        sub = SubCheck(check_name=check, price=float(find_goose["price"]), opponent_goose=opponent_goose)
-                        sub.save()
 
+    new_refresh()
+    refresh_potential_gooses()
+    print("Обновление базы успешно завершено")
     return HttpResponseRedirect("/ironparserresults/")
+
+
+def results_refresh_one(request, goose_id):
+
+    new_refresh(id=goose_id)
+    # refresh_potential_gooses(id=goose_id)
+
+    return HttpResponseRedirect("/goose_card/"+str(goose_id))

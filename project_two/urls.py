@@ -20,6 +20,7 @@ from django.conf.urls import url, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^news/', include('news.urls')),
+    url(r'^goose_card/', include('goose_card.urls')),
     url(r'^ironparsermain/', include('iron_parser.urls')),
     url(r'^ironparserresults/', include('results.urls')),
     url(r'^authorisation/', include('authorisation.urls')),
