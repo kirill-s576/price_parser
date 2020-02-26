@@ -76,6 +76,10 @@ class IronParser(object):
         self.freevape_divider = " "
         self.freevape_url_full = self.get_full_url(self.freevape_url_template, self.freevape_divider)
 
+        self.pgvg_url_template = "https://pgvg.by/site_search?search_term={0}"
+        self.pgvg_divider = " "
+        self.pgvg_url_full = self.get_full_url(self.pgvg_url_template, self.pgvg_divider)
+
     def get_full_url(self, temp, devider):
         pattern = devider.join(self.key_array)
         # Подставляем паттерн в шаблон ссылки поиска
@@ -127,9 +131,12 @@ class IronParser(object):
     def sigaretnet_parse(self):
         try:
             html = self.get_find_html(self.sigaretnet_url_full)
+
             gooses = re.findall(r'"cat-block-description">.+?<a href=(.+?)>(.+?)</a>.*?<span class="PricesalesPrice" >(.+?)</span>', html, flags=re.DOTALL)
+
             result = []
             for goose in gooses:
+                print(goose)
                 new_goose = {}
                 name = goose[1]
                 try:
@@ -200,7 +207,7 @@ class IronParser(object):
         try:
             html = self.get_find_html(self.vapeart_url_full)
             gooses = re.findall(
-                r'<div class="product-item__link"><a href=(.+?)>(.+?)</a></div>.*?<div class="product-item-price">(.+?)</div>',
+                r'<div class="product-item__link"><a href=(.+?)>(.+?)</a></div>.*?<div class="product-item-price.*?">(.+?)</div>',
                 html, flags=re.DOTALL)
             result = []
             for goose in gooses:
@@ -384,7 +391,30 @@ class IronParser(object):
                 price = goose[2]
                 url = goose[0]
                 new_goose["name"] = name
-                new_goose["price"] = float(re.findall(r'(\d+.\d+)', price)[0].replace(",", "."))
+                new_goose["price"] = float(re.findall(r'(\d+)', price)[0])
+                new_goose["url"] = url.replace('"', '')
+                result.append(new_goose)
+            result.sort(key=self.sort_price, reverse=True)
+            return result
+
+
+        except Exception as e:
+            print(e)
+            return []
+
+    def pgvg_parse(self):
+        try:
+            html = self.get_find_html(self.pgvg_url_full)
+            gooses = re.findall(
+                r'<div class="b-product-line__product-name"><a href="(.+?)".+?title="(.+?)".+?<div class="b-product-line__price">(.+?) руб.</div>', html, flags=re.DOTALL)
+            result = []
+            for goose in gooses:
+                new_goose = {}
+                name = goose[1]
+                price = goose[2]
+                url = goose[0]
+                new_goose["name"] = name
+                new_goose["price"] = float(re.findall(r'[\d,]+', price)[0].replace(",", "."))
                 new_goose["url"] = url.replace('"', '')
                 result.append(new_goose)
             result.sort(key=self.sort_price, reverse=True)
@@ -410,6 +440,7 @@ class IronParser(object):
         partut = self.partut_parse()
         beztabaka = self.beztabaka_parse()
         freevape = self.freevape_parse()
+        pgvg = self.pgvg_parse()
         all = {}
         all["SigaretNet"] = signet
         all["VipMag"] = vipmag
@@ -424,5 +455,9 @@ class IronParser(object):
         all["Partut"] = partut
         all["BezTabaka"] = beztabaka
         all["FreeVape"] = freevape
+        all["PgVg"] = pgvg
         return all
 
+
+p = IronParser("boost")
+print(p.sigaretnet_parse())

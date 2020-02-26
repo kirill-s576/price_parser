@@ -265,8 +265,8 @@ $(document).ready(function () {
     });
 
     $(".remove-potential").click(function () {
-        let potential_id = $(this).val();
-        let parentBlock = $(this).closest('tr');
+        let potential_id = $(this).val(),
+            parentBlock = $(this).closest('tr');
         data = {
             id: potential_id
         };

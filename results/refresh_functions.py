@@ -19,7 +19,7 @@ def new_refresh(**data):
             refresh_potential_gooses(id=goose.id, first=True)
         ###
 
-        check = Check(goose=goose)
+        check = Check(goose=goose, date=datetime.now())
         check.save()
         op_gooses = OpponentGoose.objects.filter(goose=goose)
         for op_goose in op_gooses:

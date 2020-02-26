@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^sells/', include('sells.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^goose_card/', include('goose_card.urls')),
     url(r'^ironparsermain/', include('iron_parser.urls')),

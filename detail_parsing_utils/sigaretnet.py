@@ -20,7 +20,7 @@ class Sigaretnet(object):
 
         # Регулярные выражения для парсинга параметров товара.
         self.name_regexp = r'<h1 itemprop="name">(.*?)</h1>'
-        self.price_regexp = r'<span class="PricesalesPrice" >(.*?) p.</span></div><meta'
+        self.price_regexp = r'<span class="PricesalesPrice" >(.*?) p.</span>'
         self.available_regexp = r'value="Добавить в корзину"'
         self.fullprice_regexp = r''
         self.imageurl_regexp = r'class=\'product-zoom-image\' itemprop=\'image\' href="(.*?)"><img src'

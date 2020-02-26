@@ -22,6 +22,14 @@ class GooseBase(models.Model):
     def __str__(self):
         return self.name
 
+    def last_subchecks(self):
+        try:
+            last_check = Check.objects.filter(goose=self).order_by('-date')[0]
+            subchecks = SubCheck.objects.filter(check_name=last_check)
+        except:
+            subchecks = ""
+        return subchecks
+
     def get_price_list(self):
         try:
             price_list = []

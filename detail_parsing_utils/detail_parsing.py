@@ -55,6 +55,10 @@ class DetailParser(object):
             from detail_parsing_utils.wov import Wov
             self.shop = Wov()
 
+        elif "pgvg" in self.goose_url:
+            from detail_parsing_utils.pgvg import PgVg
+            self.shop = PgVg()
+
         else:
             self.shop = None
 
@@ -68,5 +72,5 @@ class DetailParser(object):
         self.img = self.goose.goose_imageurl
         self.available = self.goose.goose_available
 #
-# d = DetailParser("https://vapeart.by/products/isparitel-smoant-pasito-pod-mtl-14ohm-kupit-v-minske")
-# print(d.dict)
+d = DetailParser("https://wov.by/komplect/rda-rta-atomayzeri/atomayzer-joyetech-riftcore-solo/")
+print(d.dict)

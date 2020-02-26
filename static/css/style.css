@@ -30,6 +30,26 @@ body{
     font-size: 8pt;
     height: 183px;
 }
+
+.goose-container-available{
+    text-align: center;
+    background: linear-gradient(to top right, #ffffff, #7de88f);
+    height: 195px;
+}
+
+.goose-container-notavailable{
+    text-align: center;
+    background: linear-gradient(to top right, #ffffff, #d9d381);
+    height: 195px;
+}
+
+.goose-container-notinfo{
+    text-align: center;
+    background: linear-gradient(to top right, #ffffff, #d9a296);
+    height: 195px;
+}
+
+
 .goose-name{
     height: 58%;
 }
